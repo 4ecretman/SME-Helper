@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SME CAM-F Quiz Game</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: auto; padding: 20px; }
+        h1 { text-align: center; }
+        .question { margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        .question h3 { margin-bottom: 10px; }
+        .question ul { list-style: none; padding: 0; }
+        .question li { margin-bottom: 5px; }
+        #results { margin-top: 20px; font-weight: bold; }
+        .wrong { color: red; }
+        .correct-answer { font-style: italic; }
+        button { background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <h1>SME CAM-F Quiz Game</h1>
+    <form id="quizForm"></form>
+    <button id="submitBtn" type="button">Submit Answers</button>
+    <div id="results"></div>
+
+    <script>
+        // Full pool of questions
+        const questionPool = [
+            {
+                id: 'q1',
+                text: 'Which of the following would NOT impact the design of a part or the selection of material for plating? (Check all that apply)',
+                type: 'checkbox',
+                options: { a: 'Wall thickness', b: 'Coating thickness', c: 'Temperature of plating process', d: 'Coating color' },
+                correct: ['a','d']
+            },
+            {
+                id: 'q2',
+                text: 'Select the description of the material test for Surface Tension.',
+                type: 'radio',
+                options: {
+                    a: 'A transverse load is applied to a simply supported beam while the temperature of the beam is increased.',
+                    b: 'Measure of resistance to the flow of electrons on the surface of the material.',
+                    c: 'A test specimen is subjected to a three-point bending load; the load is gradually increased until the specimen breaks.',
+                    d: 'Measurement of resistance to indentation for polymers, elastomers, and rubbers.'
+                },
+                correct: 'b'
+            },
+            {
+                id: 'q3',
+                text: 'Which one is a post-processing requirement for metal AM parts but NOT for polymer AM parts?',
+                type: 'radio',
+                options: { a: 'Heat treatment', b: 'Support removal', c: 'Sanding', d: 'Coating' },
+                correct: 'a'
+            },
+            {
+                id: 'q4',
+                text: 'Why might Powder Bed Fusion be chosen over Material Extrusion for aerospace parts?',
+                type: 'radio',
+                options: { a: 'Lower material cost', b: 'Higher resolution and material strength', c: 'Simpler geometry', d: 'Faster print speed' },
+                correct: 'b'
+            },
+            {
+                id: 'q5',
+                text: 'What does topology optimization do in AM design?',
+                type: 'radio',
+                options: { a: 'Adds additional material for strength', b: 'Removes excess material while retaining strength', c: 'Automatically generates support structures', d: 'Reduces build time by lowering resolution' },
+                correct: 'b'
+            },
+            {
+                id: 'q6',
+                text: 'Which of the following is an example of AM used in the medical field?',
+                type: 'radio',
+                options: { a: 'Mass production of household utensils', b: 'Custom implants like hip joints or dental crowns', c: 'Architectural scale models', d: 'Prototype automobile parts' },
+                correct: 'b'
+            },
+            {
+                id: 'q7',
+                text: 'Which of the following is NOT a safety risk associated with handling metal powders in AM?',
+                type: 'radio',
+                options: { a: 'Inhalation of fine particles', b: 'Fire or explosion hazards', c: 'Skin contact hazards', d: 'UV radiation exposure' },
+                correct: 'd'
+            },
+            {
+                id: 'q8',
+                text: 'What is a key design consideration in DfAM related to overhangs?',
+                type: 'radio',
+                options: { a: 'Increase layer height', b: 'Minimize unsupported angles', c: 'Eliminate infill', d: 'Use thicker walls' },
+                correct: 'b'
+            },
+            {
+                id: 'q9',
+                text: 'Which ASTM category does SLS belong to?',
+                type: 'radio',
+                options: { a: 'Material Extrusion', b: 'Vat Photopolymerization', c: 'Powder Bed Fusion', d: 'Material Jetting' },
+                correct: 'c'
+            },
+            {
+                id: 'q10',
+                text: 'Most of the techniques used for post-processing a 3D printed part rely on the use of tools and machines. Which one of the following is the most important consideration?',
+                type: 'radio',
+                options: { a: 'Time', b: 'Safety', c: 'Cost', d: 'Final Results' },
+                correct: 'b'
+            },
+            {
+                id: 'q11',
+                text: 'The portion of the machine that is used to position the print heads in the XY plane is called the: ',
+                type: 'radio',
+                options: { a: 'Z-Stage', b: 'Calibration Sensor', c: 'Kinematic Platform', d: 'Gantry' },
+                correct: 'd'
+            },
+            {
+                id: 'q12',
+                text: 'When considering Customer Applications, which of the following description of benefits best matches Production Parts?',
+                type: 'radio',
+                options: { a: 'Highest degree of customization, optimal supply chain efficiency, increased sustainability, with less material waste/usage.', b: 'Increased productivity at the assembly line, lowest cost of ownership for tooling and faster time to market.', c: 'Improved time to market, lower cost of development cycles, greater design freedom, highest degree of realism and functionality.' },
+                correct: 'a'
+            },
+            {
+                id: 'q13',
+                text: 'Of the bonding methods used to join FDM printed parts together, which one is the weakest?',
+                type: 'radio',
+                options: { a: 'Hot Air Welding', b: 'Solvent Bond', c: 'Epoxy' },
+                correct: 'c'
+            },
+            {
+                id: 'q13',
+                text: 'Of the bonding methods used to join FDM printed parts together, which one is the strongest?',
+                type: 'radio',
+                options: { a: 'Hot Air Welding', b: 'Solvent Bond', c: 'Epoxy' },
+                correct: 'a'
+            },
+            {
+                id: 'q14',
+                text: 'Different abrasive media are recommended for different plastics used in FDM printing. Based on your understanding of the media types, which of the plastics below are likely the toughest and most difficult to finish? (Check all that apply)',
+                type: 'checkbox',
+                options: { a: 'Polyphenylsulfone (PPSF)', b: 'Acrylonitrile Butadiene Styrene (ABS)', c: 'Polycarbonate (PC)', d: 'Polyetherimide ULTEM', e:  'Polylactic Acid (PLA)' },
+                correct: ['a','c','d']
+            },
+            {
+                id: 'q15',
+                text: 'What is an end effector?',
+                type: 'radio',
+                options: { a: 'The piece on a drill to change the speed of rotation.', b: 'The end of a robot arm that does things.', c: 'A finger on a robot.' },
+                correct: 'b'
+            },
+            {
+                id: 'q16',
+                text: 'What does SME CAM-F stand for?',
+                type: 'radio',
+                options: { a: 'Subject Matter Expert, Certification of Absolutely Mediocre-Fabrication', b: 'Society of Manufacturing Engineers, Cyborg Arm Maintenance-Fundamentals', c: 'Society of Manufacturing Engineers, Certified Additive Manufacturing-Fundamentals' },
+                correct: 'c'
+            },
+            {
+                id: 'q17',
+                text: 'Which best describes ABSi (a standard material)?',
+                type: 'radio',
+                options: { a: 'Translucent standard plastic available in 9 colors', b: 'Opaque standard plastic available in 3 colors', c: 'Translucent standard plastic available in 3 colors', d: 'Opaque standard plastic available in 9 colors' },
+                correct: 'c'
+            },
+            {
+                id: 'q18',
+                text: 'Which is the proper Manufacturing Era description for the Neolithic?',
+                type: 'radio',
+                options: { a: 'Early use of steam-powered machinery', b: 'The introduction of FORD-ism and Toyota-ism', c: 'Transition from hunting/gathering to agriculture', d: 'Shift from analog/mechanical/electronic to digital', e: 'Democratization of fabrication technology' },
+                correct: 'c'
+            },
+            {
+                id: 'q19',
+                text: 'Which of the following is a ‘Soluble Support’?',
+                type: 'radio',
+                options: { a: 'ULT_S', b: 'SR-35', c: 'PC_S', d: 'SR-110' },
+                correct: 'd'
+            },
+            //Centrifugal Barrel Machines: Best for parts with fine details, delicate features, and when a quick, aggressive finish is required. Suitable for small to medium-sized parts and a variety of materials.
+            //Vibratory Tubs: Ideal for parts that are more fragile, have complex geometries, or require a gentler, more uniform finish. Suitable for a wide range of part sizes and materials.
+            // Additional questions can be added here in the format up there ^_^
+        ];
+
+        // Shuffle the questions into an array
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Pick 8 random questions
+        const questionsShown = shuffle([...questionPool]).slice(0, 8);
+
+        // Render questions
+        const form = document.getElementById('quizForm');
+        questionsShown.forEach((q, idx) => {
+            const div = document.createElement('div');
+            div.className = 'question';
+            const title = document.createElement('h3');
+            title.textContent = `${idx + 1}. ${q.text}`;
+            div.appendChild(title);
+
+            const ul = document.createElement('ul');
+            for (const [key, val] of Object.entries(q.options)) {
+                const li = document.createElement('li');
+                const input = document.createElement('input');
+                input.type = q.type;
+                input.name = q.id;
+                input.value = key;
+                input.id = `${q.id}_${key}`;
+                const label = document.createElement('label');
+                label.htmlFor = input.id;
+                label.textContent = ` ${key}. ${val}`;
+                li.appendChild(input);
+                li.appendChild(label);
+                ul.appendChild(li);
+            }
+            div.appendChild(ul);
+            form.appendChild(div);
+        });
+
+        // Handle submission
+        document.getElementById('submitBtn').addEventListener('click', () => {
+            let score = 0;
+            const total = questionsShown.length;
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            questionsShown.forEach((q, idx) => {
+                const userAnswers = Array.from(document.getElementsByName(q.id))
+                                         .filter(el => el.checked)
+                                         .map(el => el.value);
+                const correct = q.correct;
+                let correctFlag = false;
+                if (Array.isArray(correct)) {
+                    correctFlag = userAnswers.length === correct.length && correct.every(c => userAnswers.includes(c));
+                } else {
+                    correctFlag = userAnswers[0] === correct;
+                }
+                if (correctFlag) score++;
+                else {
+                    const div = document.createElement('div');
+                    div.className = 'wrong';
+                    div.innerHTML = `Question ${idx + 1} incorrect. Correct answer: ` +
+                                     (Array.isArray(correct) ? correct.join(', ') : correct) +
+                                     `.`;
+                    const explanation = document.createElement('div');
+                    explanation.className = 'correct-answer';
+                    // Could add option text if desired
+                    div.appendChild(explanation);
+                    resultsDiv.appendChild(div);
+                }
+            });
+
+            const scoreDiv = document.createElement('div');
+            scoreDiv.textContent = `You scored ${score} out of ${total}.`;
+            resultsDiv.prepend(scoreDiv);
+        });
+    </script>
+</body>
+</html>
