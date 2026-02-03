@@ -10,7 +10,7 @@ You can click on each file to preview them, but you have to download them to hav
 * [The Practice Game](https://github.com/4ecretman/SME-Helper/blob/main/SME%20CAM-F%20Study%20Game.html) is a simple multiple choice practice test that changes the questions every time you refresh the tab. 
 * [The Brief](https://github.com/4ecretman/SME-Helper/blob/main/SME%20Brief.pdf) has some of the main info that you will need on the test. If you don't know something on the study guide, it will probably be answered here.
 
-### Files for the test
+### Files for the test:
 The SME test is open book, but not open internet so the book is provided here. **Make sure to download these before the test**
 * [SME Modules](https://github.com/4ecretman/SME-Helper/blob/main/SME%20MODULES%201-28%20SEARCHABLE.pdf): Searchable PDF with all the info from the SME modules.
 * [Stratasys Modules](https://github.com/4ecretman/SME-Helper/blob/main/STRATASYS%20SEARCHABLE%20GUIDE.pdf): Searchable presentation with some info about the Stratasys machines and materials.
