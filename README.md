@@ -14,3 +14,4 @@ You can click on each file to preview them, but you have to download them to hav
 The SME test is open book, but not open internet so the book is provided here. **Make sure to download these before the test**
 * [SME Modules](https://github.com/4ecretman/SME-Helper/blob/main/SME%20MODULES%201-28%20SEARCHABLE.pdf): Searchable PDF with all the info from the SME modules.
 * [Stratasys Modules](https://github.com/4ecretman/SME-Helper/blob/main/STRATASYS%20SEARCHABLE%20GUIDE.pdf): Searchable presentation with some info about the Stratasys machines and materials.
+* [CAM-T PDFs](https://github.com/4ecretman/SME-Helper/tree/main/CAM-T%20PDF%20Documents): This folder is for CAM-T (technician) so second years have all the modules.
