@@ -24,8 +24,8 @@
     <div id="results"></div>
 
     <script>
-        // Full pool of questions
-        const questionPool = [
+        // SME CAM-F pool of questions
+        const questionPool1 = [
             {
                 id: 'q1',
                 text: 'Which of the following would NOT impact the design of a part or the selection of material for plating? (Check all that apply)',
@@ -187,8 +187,33 @@
                 options: { a: 'Copper', b: 'Aluminum oxide', c: 'Stainless-steel', d: 'Green sand' },
                 correct: 'c'
             },
+            {
+                id: 'q22',
+                text: 'In laser powder bed fusion, which type of file is created by converting an STL file?',
+                type: 'radio',
+                options: { a: 'M code file', b: 'CAD file', c: 'Job file', d: 'G code file' },
+                correct: 'c'
+            },
             // Additional questions can be added here in the format up there ^_^
         ];
+
+        // SME CAM-T pool of questions
+        const questionPool2 = [
+            {
+                id: 'q1',
+                text: 'Which of the following aspects of the DED build process can change the mechanical properties of a part?',
+                type: 'radio',
+                options: { a: 'Deposition width', b: 'Adaptive slicing', c: 'Support structures', d: 'Heat-affected zone' },
+                correct: 'd'
+            },
+            {
+                id: 'q2',
+                text: 'Which sheet lamination process is most likely to require heat treatment after the part is complete?',
+                type: 'radio',
+                options: { a: 'Laminated Object Manufacturing', b: 'Composite-Based Additive Manufacturing', c: 'Ultrasonic Additive Manufacturing', d: 'Selective Deposition Lamination' },
+                correct: 'b'
+            },
+        ]
 
         // Shuffle the questions into an array
         function shuffle(array) {
@@ -200,7 +225,7 @@
         }
 
         // Pick 8 random questions
-        const questionsShown = shuffle([...questionPool]).slice(0, 8);
+        const questionsShown = shuffle([...questionPool1]).slice(0, 8);
 
         // Render questions
         const form = document.getElementById('quizForm');
